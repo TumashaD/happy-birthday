@@ -1,4 +1,12 @@
 // Import the data to customize and insert them into page
+
+document.addEventListener("click", startAnimation);
+
+function startAnimation() {
+  document.removeEventListener("click", startAnimation);
+  animationTimeline();
+}
+
 const fetchData = () => {
   fetch("customize.json")
     .then(data => data.json())
@@ -18,14 +26,13 @@ const fetchData = () => {
         // Check if the iteration is over
         // Run amimation if so
         if ( dataArr.length === dataArr.indexOf(customData) + 1 ) {
-          animationTimeline();
         } 
       });
     });
 };
 
 // Animation Timeline
-const animationTimeline = () => {
+function animationTimeline () {
   // Spit chars that needs to be animated individually
   const textBoxChars = document.getElementsByClassName("hbd-chatbox")[0];
   const hbd = document.getElementsByClassName("wish-hbd")[0];
@@ -51,12 +58,19 @@ const animationTimeline = () => {
     rotationY: 5,
     skewX: "-15deg"
   };
-
+  const audio = document.getElementById("background-audio");
   const tl = new TimelineMax();
 
   tl
+  .add(() => {
+    // Play the audio when the animation starts
+    audio.play();
+  })
     .to(".container", 0.1, {
       visibility: "visible"
+    })
+    .to(".clickMe", 0.5, {
+      opacity: 0
     })
     .from(".one", 0.7, {
       opacity: 0,
@@ -82,7 +96,7 @@ const animationTimeline = () => {
         opacity: 0,
         y: 10
       },
-      "-=1"
+      "-=0.5"
     )
     .from(".three", 0.7, {
       opacity: 0,
@@ -96,7 +110,7 @@ const animationTimeline = () => {
         opacity: 0,
         y: 10
       },
-      "+=2"
+      "+=0.5"
     )
     .from(".four", 0.7, {
       scale: 0.2,
@@ -125,7 +139,7 @@ const animationTimeline = () => {
         opacity: 0,
         y: -150
       },
-      "+=0.7"
+      "+=0.5"
     )
     .from(".idea-1", 0.7, ideaTextTrans)
     .to(".idea-1", 0.7, ideaTextTransLeave, "+=1.5")
@@ -170,7 +184,7 @@ const animationTimeline = () => {
         scale: 0.2,
         opacity: 0
       },
-      "+=2"
+      "+=0.5"
     )
     .staggerFrom(
       ".idea-6 span",
@@ -193,8 +207,11 @@ const animationTimeline = () => {
         ease: Expo.easeOut
       },
       0.2,
-      "+=1"
+      "+=0.5"
     )
+    .to(".background", 0.5, {
+      opacity: 0.5,
+})
     .staggerFromTo(
       ".baloons img",
       2.5,
@@ -218,7 +235,7 @@ const animationTimeline = () => {
         y: -25,
         rotationZ: -45
       },
-      "-=2"
+      "-=0.5"
     )
     .from(".hat", 0.5, {
       x: -100,
@@ -239,6 +256,9 @@ const animationTimeline = () => {
       },
       0.1
     )
+    .to(".background", 0.5, {
+      opacity: 0.1
+    })
     .staggerFromTo(
       ".wish-hbd span",
       0.7,
@@ -265,6 +285,9 @@ const animationTimeline = () => {
       },
       "party"
     )
+    .to(".background", 0.5, {
+      opacity: 0.5
+    })
     .staggerTo(
       ".eight svg",
       1.5,
@@ -289,7 +312,7 @@ const animationTimeline = () => {
       {
         rotation: 90
       },
-      "+=1"
+      "+=0.5"
     );
 
   // tl.seek("currentStep");
